@@ -1,0 +1,42 @@
+[project]
+name = "uob_dice"
+authors = [
+    { name = "UoB DICE team", email = "lcg-admin@bristol.ac.uk" },
+]
+maintainers = [
+    { name = "The UoB DICE Team", email = "lcg-admin@bristol.ac.uk" },
+]
+requires-python = ">=3.11"
+dynamic = ["version"]
+description = "Python Packages for DICE"
+readme = "README.md"
+
+classifiers = [
+    "License :: OSI Approved :: BSD License",
+    "Topic :: Scientific/Engineering",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Development Status :: 4 - Beta",
+]
+
+[tool.hatch]
+version.source = "vcs"
+build.hooks.vcs.version-file = "src/dice/_version.py"
+
+[tool.uv.sources]
+dice-cli = {workspace = true}
+dice-lib = {workspace = true}
+dice-api = {workspace = true}
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
