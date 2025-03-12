@@ -28,7 +28,7 @@ classifiers = [
   "Topic :: Scientific/Engineering",
   "Typing :: Typed",
 ]
-dynamic = ["version"]
+version = "2025.03.1"
 dependencies = [
   "dice-lib >= 2024.1.1",
   "fastapi >=0.104.1",
@@ -62,9 +62,9 @@ Discussions = "https://github.com/uobdic/dice-api/discussions"
 Changelog = "https://github.com/uobdic/dice-api/releases"
 
 
-[tool.hatch]
-version.source = "vcs"
-build.hooks.vcs.version-file = "src/dice_api/_version.py"
+# [tool.hatch]
+# version.source = "vcs"
+# build.hooks.vcs.version-file = "../../src/dice/_version.py"
 
 [tool.hatch.env.default]
 features = ["test"]
