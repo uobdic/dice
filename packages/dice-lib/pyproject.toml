@@ -1,0 +1,188 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "dice_lib"
+authors = [
+    { name = "UoB DICE team", email = "lcg-admin@bristol.ac.uk" },
+]
+maintainers = [
+    { name = "The UoB DICE Team", email = "lcg-admin@bristol.ac.uk" },
+]
+license = { file = "LICENSE" }
+
+description = "Python Library for DICE"
+readme = "README.md"
+
+requires-python = ">=3.6"
+
+classifiers = [
+    "License :: OSI Approved :: BSD License",
+    "Topic :: Scientific/Engineering",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Development Status :: 4 - Beta",
+]
+
+
+dynamic = ["version"]
+dependencies = [
+    "beautifulsoup4 < 5",
+    "dnspython>=2.2.0",
+    "fasthep-logging",
+    "htcondor>=23",
+    "omegaconf>=2.1.2",
+    "pandas",
+    "paramiko",
+    "plumbum",
+    "pyarrow",
+    "pydantic",
+    "pyhdfs",
+    "python-nmap",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest >=6",
+    "pytest-cov >=3",
+]
+dev = [
+    "pytest >=6",
+    "pytest-cov >=3",
+]
+docs = [
+  "sphinx>=7.0",
+  "myst_parser>=0.13",
+  "sphinx_copybutton",
+  "sphinx_autodoc_typehints",
+  "sphinxcontrib-mermaid",
+  "sphinx-inline-tabs",
+  "furo>=2023.08.17",
+]
+
+[project.urls]
+homepage = "https://github.com/uobdic/dice-lib"
+"Bug Tracker" = "https://github.com/uobdic/dice-lib/issues"
+Discussions = "https://github.com/uobdic/dice-lib/discussions"
+Changelog = "https://github.com/uobdic/dice-lib/releases"
+
+
+[tool.hatch]
+version.source = "vcs"
+build.hooks.vcs.version-file = "src/dice_lib/_version.py"
+
+[tool.hatch.env.default]
+features = ["test"]
+scripts.test = "pytest {args}"
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+filterwarnings = [
+  "error",
+]
+log_cli_level = "INFO"
+testpaths = [
+    "tests",
+]
+
+
+[tool.coverage]
+run.source = ["dice_lib"]
+port.exclude_lines = [
+  'pragma: no cover',
+  '\.\.\.',
+  'if typing.TYPE_CHECKING:',
+]
+
+
+[tool.pycln]
+all = true
+
+
+[tool.mypy]
+files = ["src", "tests"]
+python_version = "3.9"
+warn_unused_configs = true
+plugins = [
+    "pydantic.mypy"
+]
+
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+no_implicit_reexport = true
+strict_equality = true
+ignore_missing_imports = true
+
+
+[tool.ruff]
+src = ["src"]
+
+[tool.ruff.lint]
+extend-select = [
+  "B",           # flake8-bugbear
+  "I",           # isort
+  "ARG",         # flake8-unused-arguments
+  "C4",          # flake8-comprehensions
+  "EM",          # flake8-errmsg
+  "ICN",         # flake8-import-conventions
+  "G",           # flake8-logging-format
+  "PGH",         # pygrep-hooks
+  "PIE",         # flake8-pie
+  "PL",          # pylint
+  "PT",          # flake8-pytest-style
+  "PTH",         # flake8-use-pathlib
+  "RET",         # flake8-return
+  "RUF",         # Ruff-specific
+  "SIM",         # flake8-simplify
+  "T20",         # flake8-print
+  "UP",          # pyupgrade
+  "YTT",         # flake8-2020
+  "EXE",         # flake8-executable
+  "NPY",         # NumPy specific rules
+  "PD",          # pandas-vet
+]
+ignore = [
+  "PLR",    # Design related pylint codes
+]
+isort.required-imports = ["from __future__ import annotations"]
+# Uncomment if using a _compat.typing backport
+# typing-modules = ["dice_lib._compat.typing"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["T20"]
+"noxfile.py" = ["T20"]
+
+
+[tool.pylint]
+py-version = "3.10"
+ignore-paths = [".*/_version.py"]
+reports.output-format = "colorized"
+similarities.ignore-imports = "yes"
+messages_control.disable = [
+  "design",
+  "fixme",
+  "line-too-long",
+  "missing-module-docstring",
+  "wrong-import-position",
+]
