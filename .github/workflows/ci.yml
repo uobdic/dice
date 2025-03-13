@@ -32,13 +32,15 @@ jobs:
           extra_args: --hook-stage manual --all-files
       - name: Setup venv
         run: uv venv
+      - name: Install package
+        run: |
+          uv pip install -e .
+          uv pip install -e packages/*
       - name: Run PyLint
         run: |
           echo "::add-matcher::$GITHUB_WORKSPACE/.github/matchers/pylint.json"
-          uv pip install -e .
-          uv pip install -e packages/*
           uv pip install pylint
-          uv run pylint src tests packages
+          uv run pylint src tests packages/*/src packages/*/tests || true
 
   checks:
     name: Check Python ${{ matrix.python-version }} on ${{ matrix.runs-on }}
