@@ -30,6 +30,9 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
 
+      - name: Setup venv
+        run: uv venv
+
       - name: Build sdist and wheel
         run: |
           uv build
