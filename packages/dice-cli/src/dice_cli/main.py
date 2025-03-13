@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Any, Optional
+from typing import Any
 
 import rich
 import typer
@@ -41,7 +41,7 @@ def version() -> None:
 
 @app.command()
 def glossary(
-    word: Optional[str] = typer.Argument(None, help="Word to search for"),
+    word: str = typer.Argument("", help="Word to search for"),
     print_all: bool = typer.Option(
         False, "--all", "-a", help="Print all glossary entries"
     ),

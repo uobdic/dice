@@ -70,7 +70,12 @@ def storage(
 
         admin_logger.info("Summary for top 5 users:")
         admin_logger.info(
-            tabulate(df.head(5), headers=headers, tablefmt="psql", showindex=False)
+            tabulate(
+                df.head(5),  # type: ignore[arg-type]
+                headers=headers,
+                tablefmt="psql",
+                showindex=False,
+            )
         )
 
 

@@ -22,7 +22,10 @@ def _get_accounting_data(url: str) -> list[dict[str, str]]:
 
     soup = BeautifulSoup(response.text, "html.parser")
     table = soup.find("table")
-    rows = table.find_all("tr")
+    if not table:
+        msg = f"No table found in {url}"
+        raise RuntimeError(msg)
+    rows = table.find_all("tr")  # type: ignore[union-attr]
     header = [cell.text for cell in rows[1].find_all("th")]
     data = []
     for row in rows[2:]:

@@ -7,20 +7,21 @@
 [![PyPI version][pypi-version]][pypi-link]
 [![PyPI platforms][pypi-platforms]][pypi-link]
 
-[actions-badge]:            https://github.com/uobdic/dice-cli/workflows/CI/badge.svg
-[actions-link]:             https://github.com/uobdic/dice-cli/actions
-[black-badge]:              https://img.shields.io/badge/code%20style-black-000000.svg
-[black-link]:               https://github.com/psf/black
-[pypi-link]:                https://pypi.org/project/dice-cli/
-[pypi-platforms]:           https://img.shields.io/pypi/pyversions/dice-cli
-[pypi-version]:             https://badge.fury.io/py/dice-cli.svg
-[rtd-badge]:                https://readthedocs.org/projects/dice-cli/badge/?version=latest
-[rtd-link]:                 https://dice-cli.readthedocs.io/en/latest/?badge=latest
+[actions-badge]: https://github.com/uobdic/dice-cli/workflows/CI/badge.svg
+[actions-link]: https://github.com/uobdic/dice-cli/actions
+[black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
+[black-link]: https://github.com/psf/black
+[pypi-link]: https://pypi.org/project/dice-cli/
+[pypi-platforms]: https://img.shields.io/pypi/pyversions/dice-cli
+[pypi-version]: https://badge.fury.io/py/dice-cli.svg
+[rtd-badge]: https://readthedocs.org/projects/dice-cli/badge/?version=latest
+[rtd-link]: https://dice-cli.readthedocs.io/en/latest/?badge=latest
 
 ## Installation
 
-The best way to install `dice-cli` is via `pipx`.
-This will setup a separate `virtualenv` for `dice-cli` preventing interference with your normal Python setup.
+The best way to install `dice-cli` is via `pipx`. This will setup a separate
+`virtualenv` for `dice-cli` preventing interference with your normal Python
+setup.
 
 ```bash
 pipx install dice-cli
@@ -34,29 +35,36 @@ dice --install-completion
 
 which will install the completion for your shell.
 
-Should you be using a "non-standard" shell, you can check what will be installed through
+Should you be using a "non-standard" shell, you can check what will be installed
+through
 
 ```bash
 dice --show-completion
 ```
 
-
 ## Development
 
 ### Development cycle
 
-`dice-cli` has a direct, tight dependency on [dice-lib](https://github.com/uobdic/dice-lib).
-New features are usually developed within `dice-cli` first, and then common functionality is moved to `dice-lib`.
+`dice-cli` has a direct, tight dependency on
+[dice-lib](https://github.com/uobdic/dice-lib). New features are usually
+developed within `dice-cli` first, and then common functionality is moved to
+`dice-lib`.
 
 ### Code layout
 
-CLI commands are currently grouped into two categories: `admin` and `user`.
-All categories, except for `user` need to be placed in their respective folders.
-Each category should use its own logging and error handling to allow for individual tuning.
+CLI commands are currently grouped into two categories: `admin` and `user`. All
+categories, except for `user` need to be placed in their respective folders.
+Each category should use its own logging and error handling to allow for
+individual tuning.
 
-Main commands are implemented directly into `<category>/__init__.py`, e.g. `dice admin scan_groups_and_users`, while subcommands should be placed in `<category>/<command>/__init__.py`, e.g. `dice job why_is_my_job_not_running`.
+Main commands are implemented directly into `<category>/__init__.py`, e.g.
+`dice admin scan_groups_and_users`, while subcommands should be placed in
+`<category>/<command>/__init__.py`, e.g. `dice job why_is_my_job_not_running`.
 
-Should a command require extensive logic, it should be placed in its own file , e.g. `admin/_print_used_id_ranges.py`. This will be the main point of change when things move to `dice-lib`.
+Should a command require extensive logic, it should be placed in its own file ,
+e.g. `admin/_print_used_id_ranges.py`. This will be the main point of change
+when things move to `dice-lib`.
 
 Snapshot (2022.02.17):
 

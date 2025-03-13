@@ -23,8 +23,13 @@ def main(users_file: str, group_file: str) -> None:
     userids = _read_userids(users_file)
     groupids = _read_groupids(group_file)
 
-    uid_ranges = ",".join(as_range(g) for _, g in groupby(userids, groupby_range))
-    gid_ranges = ",".join(as_range(g) for _, g in groupby(groupids, groupby_range))
+    uid_ranges = ",".join(
+        as_range(g) for _, g in groupby(userids, groupby_range)  # type:ignore[arg-type]
+    )
+    gid_ranges = ",".join(
+        as_range(g)
+        for _, g in groupby(groupids, groupby_range)  # type:ignore[arg-type]
+    )
 
     admin_logger.info(f"Used UID ranges: {uid_ranges}")
     admin_logger.info(f"Used GID ranges: {gid_ranges}")

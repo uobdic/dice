@@ -86,7 +86,7 @@ def _cleanup_hosts(
 ) -> Generator[Dict[str, str], None, None]:
     for host in hosts:
         if host["fqdn"] is None:
-            continue
+            continue  # type:ignore[unreachable]
         if host["ipv4"].endswith(".250"):
             continue
         if host["fqdn"].endswith("."):

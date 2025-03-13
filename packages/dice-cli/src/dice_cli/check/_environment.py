@@ -44,7 +44,7 @@ def get_env_for_scope(scope: EnvironmentScope) -> Dict[str, str]:
 
 def check_env_entry(name: str, value: str) -> EnvironmentStatus:
     # TODO: add hints if things deviate from /etc/dice/config.yaml
-    if value is None or value == "":
+    if value == "":
         return EnvironmentStatus.missing
     return EnvironmentStatus.ok
 
