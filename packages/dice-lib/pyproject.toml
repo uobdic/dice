@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "dice_lib"
-version = "2025.03.1"
+dynamic = ["version"]
 authors = [
     { name = "UoB DICE team", email = "lcg-admin@bristol.ac.uk" },
 ]
@@ -76,8 +76,8 @@ Changelog = "https://github.com/uobdic/dice-lib/releases"
 
 
 [tool.hatch]
-version.source = "vcs"
-build.hooks.vcs.version-file = "src/dice_lib/_version.py"
+version.path = "../../src/dice/_version.py"
+version.pattern = "__version__ = version = '(?P<version>[^']+)'"
 
 [tool.hatch.env.default]
 features = ["test"]
