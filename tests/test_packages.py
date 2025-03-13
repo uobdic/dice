@@ -11,9 +11,11 @@ def test_dice_api_version() -> None:
     assert da.__version__
     assert importlib.metadata.version("dice_api") == da.__version__
 
+
 def test_dice_cli_version() -> None:
     assert dc.__version__
     assert importlib.metadata.version("dice_cli") == dc.__version__
+
 
 def test_dice_lib_version() -> None:
     assert dl.__version__
