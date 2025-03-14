@@ -69,4 +69,4 @@ jobs:
       - if: github.event_name == 'release' && github.event.action == 'published'
         name: Publish packages
         run: |
-          uv publish --all-packages --token ${{ secrets.pypi_password }} --trusted-publishing automatic
+          uv publish --token="${{ secrets.pypi_password }}" --trusted-publishing automatic
