@@ -28,8 +28,8 @@ classifiers = [
   "License :: OSI Approved :: BSD License",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Development Status :: 1 - Planning",
 ]
 
@@ -90,7 +90,7 @@ all = true
 
 [tool.mypy]
 files = "src"
-python_version = "3.9"
+python_version = "3.11"
 warn_unused_configs = true
 
 disallow_any_generics = true
