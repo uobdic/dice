@@ -1,12 +1,16 @@
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
+
+from dice_lib.host import current_fqdn
 
 from .._io import write_list_data_as_dict_to_csv
 from ..logger import admin_logger
 
 
-def _read_groups() -> List[Dict[str, str]]:
-    with open("/etc/group") as f:
+def _read_groups() -> list[dict[str, str]]:
+    with Path("/etc/group").open() as f:
         group_lines = f.readlines()
     groups = []
     for line in group_lines:
@@ -15,8 +19,8 @@ def _read_groups() -> List[Dict[str, str]]:
     return groups
 
 
-def _read_users() -> List[Dict[str, str]]:
-    with open("/etc/passwd") as f:
+def _read_users() -> list[dict[str, str]]:
+    with Path("/etc/passwd").open() as f:
         user_lines = f.readlines()
     users = []
     for line in user_lines:
@@ -26,21 +30,19 @@ def _read_users() -> List[Dict[str, str]]:
 
 
 def _write_users_to_csv(
-    users: List[Dict[str, Any]],
+    users: list[dict[str, Any]],
     output_file: str = "/tmp/users.csv",
 ) -> None:
     write_list_data_as_dict_to_csv(users, ["name", "uid", "gid"], Path(output_file))
 
 
 def _write_groups_to_csv(
-    groups: List[Dict[str, Any]], output_file: str = "/tmp/groups.csv"
+    groups: list[dict[str, Any]], output_file: str = "/tmp/groups.csv"
 ) -> None:
     write_list_data_as_dict_to_csv(groups, ["name", "gid"], Path(output_file))
 
 
 def main() -> None:
-    from dice_lib.host import current_fqdn
-
     groups = _read_groups()
     users = _read_users()
     hostname = current_fqdn()

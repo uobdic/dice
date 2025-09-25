@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import importlib.metadata
 
-import dice_api as da
 import dice_cli as dc
+
+import dice_api as da
 import dice_lib as dl
 
 

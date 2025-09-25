@@ -1,5 +1,7 @@
 """ Collects information about the inventory of the system. """
-from typing import Dict, Generator, List
+from __future__ import annotations
+
+from collections.abc import Generator
 
 from plumbum import SshMachine
 from typer import progressbar
@@ -33,7 +35,7 @@ COLUMNS = [
 
 
 @admin_cache.memoize(expire=60 * 60, tag="inventory._get_host_info")
-def _get_host_info(ipv4_address: str, user: str) -> Dict[str, str]:
+def _get_host_info(ipv4_address: str, user: str) -> dict[str, str]:
     admin_logger.debug(f"Getting host info for {ipv4_address}")
     # TODO: find a way to do all below as a single command
     # NOTE: this is a good candidate for the DICE API service
@@ -61,33 +63,33 @@ def _get_host_info(ipv4_address: str, user: str) -> Dict[str, str]:
         comments = facter("node_info.comments")
         linked_service_tsm = facter("node_info.linked_service_tsm")
 
-    return dict(
-        hostname=hostname,
-        domain=domain,
-        cnames=cnames,
-        os=os,
-        virtual=virtual,
-        platform=platform,
-        puppet_managed=puppet_managed,
-        puppet_group=puppet_group,
-        role=role,
-        service_name=service_name,
-        owner_team=owner_team,
-        owner=owner,
-        rack=rack,
-        position_in_rack=position_in_rack,
-        data_centre=data_centre,
-        building=building,
-        location=location,
-        comments=comments,
-        linked_service_tsm=linked_service_tsm,
-    )
+    return {
+        "hostname": hostname,
+        "domain": domain,
+        "cnames": cnames,
+        "os": os,
+        "virtual": virtual,
+        "platform": platform,
+        "puppet_managed": puppet_managed,
+        "puppet_group": puppet_group,
+        "role": role,
+        "service_name": service_name,
+        "owner_team": owner_team,
+        "owner": owner,
+        "rack": rack,
+        "position_in_rack": position_in_rack,
+        "data_centre": data_centre,
+        "building": building,
+        "location": location,
+        "comments": comments,
+        "linked_service_tsm": linked_service_tsm,
+    }
 
 
 def _inventory_from_network_report(
-    network_report: List[Dict[str, str]],
+    network_report: list[dict[str, str]],
     user: str,
-) -> Generator[Dict[str, str], None, None]:
+) -> Generator[dict[str, str], None, None]:
     with progressbar(network_report) as progress:
         # TODO: this loop should by async
         for host in progress:

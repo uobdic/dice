@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 from typing import Any
 
 import typer
+
 from dice_lib import load_config
 
 from ..logger import user_logger

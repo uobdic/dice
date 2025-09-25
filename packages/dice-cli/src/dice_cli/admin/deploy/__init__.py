@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import typer
 
 from dice_cli.logger import admin_logger
@@ -20,6 +22,7 @@ def hdfs_mount(
         admin_logger.info(">> Would execute:")
         for command in commands:
             admin_logger.info(f"{command}")
+        admin_logger.info(f"on host {host}")
         return
 
     # create download destination

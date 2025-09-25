@@ -1,4 +1,6 @@
-import os
+from __future__ import annotations
+
+from pathlib import Path
 from time import localtime, strftime
 
 import classad
@@ -7,11 +9,11 @@ import tabulate
 startd_history_file = (
     "~/pCloudDrive/DICE/incidents/2023.07.05/hd75/startd_history.other"
 )
-startd_history_file = os.path.expanduser(startd_history_file)
+startd_history_file = str(Path(startd_history_file).expanduser())
 
 
 def get_ads_from_file(filename):
-    with open(filename) as f:
+    with Path(filename).open() as f:
         lines = f.readlines()
     ads = []
     stop_at = "*** Offset"
@@ -70,12 +72,12 @@ headers, rows = get_ad_info(
 )
 
 
-print("CMS Pilot Jobs")
-print(tabulate.tabulate(rows, headers=headers, tablefmt="psql"))
+print("CMS Pilot Jobs")  # noqa: T201
+print(tabulate.tabulate(rows, headers=headers, tablefmt="psql"))  # noqa: T201
 
-print("Jobs with start time before event and end time after event")
+print("Jobs with start time before event and end time after event")  # noqa: T201
 filtered_ads = filter_ads_for_event(ads, event_time, ten_minutes_in_epoch)
 headers, rows = get_ad_info(
     filtered_ads, time_fmt_func=lambda x: strftime("%Y-%m-%d %H:%M:%S", localtime(x))
 )
-print(tabulate.tabulate(rows, headers=headers, tablefmt="psql"))
+print(tabulate.tabulate(rows, headers=headers, tablefmt="psql"))  # noqa: T201

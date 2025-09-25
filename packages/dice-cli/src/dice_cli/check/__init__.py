@@ -1,4 +1,8 @@
-from typing import Any, Callable, Dict, List
+from __future__ import annotations
+
+import inspect
+from collections.abc import Callable
+from typing import Any
 
 import typer
 
@@ -9,7 +13,7 @@ app = typer.Typer(help="DICE commands for various checks")
 
 
 def add_enum_as_options(enum_class: Any) -> Callable[..., Any]:
-    import inspect
+    
 
     def change_params(func: Callable[..., Any]) -> Callable[..., Any]:
         params = []
@@ -34,7 +38,7 @@ def add_enum_as_options(enum_class: Any) -> Callable[..., Any]:
 
 @app.command()
 @add_enum_as_options(enum_class=EnvironmentScope)
-def environment(*args: List[Any], **kwargs: Dict[str, Any]) -> None:
+def environment(**kwargs: dict[str, Any]) -> None:
     """
     Check environment
     """

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
+from collections.abc import Iterable, Iterator
 from itertools import count
-from typing import Iterable, Iterator
 
 
 def as_range(iterable: Iterable[int]) -> str:

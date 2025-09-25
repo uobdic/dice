@@ -1,9 +1,15 @@
+from __future__ import annotations
+
 import logging
-import os
 from typing import Any
 
 import rich
 import typer
+from anyio import Path
+from prettytable import PrettyTable
+
+from dice_lib import GLOSSARY
+from dice_lib.user import current_user
 
 from . import __version__, _date, benchmark, check, docs, info, job
 from .logger import console_handler, user_logger
@@ -49,10 +55,10 @@ def glossary(
     """
     Show the meaning of a given word (in DICE context)
     """
-    from dice_lib import GLOSSARY
+    
 
     if print_all:
-        from prettytable import PrettyTable
+        
 
         x = PrettyTable()
         x.field_names = ["Word", "Meaning"]
@@ -72,7 +78,7 @@ def glossary(
 
 @app.command()
 def date(
-    date_format: _date.DateOptions = typer.Option(
+    date_format: _date.DateOptions = typer.Option(  # noqa: B008
         _date.DateOptions.ISO8601_JUST_Y_M_D,
         "--format",
         "-f",
@@ -99,12 +105,12 @@ def contribute() -> None:
 
 def __create_dir(path: str) -> None:
     """Create a directory if it does not exist"""
-    if os.path.exists(path):
+    if Path(path).exists():
         user_logger.warning(f"Directory {path!r} already exists - skipping")
         return
     user_logger.info(f"Creating directory {path!r}")
     try:
-        os.makedirs(path)
+        _ = Path(path).mkdir(parents=True, exist_ok=True)
     except Exception as e:
         user_logger.error(f"Unable to create directory {path!r}: {e}")
         raise typer.Exit(1) from e
@@ -115,7 +121,7 @@ def setmeup() -> None:
     """
     Command to set you up across all DICE systems
     """
-    from dice_lib.user import current_user
+    
 
     # create /storage/<username> directory
     # create /scratch/<username> directory
@@ -125,7 +131,7 @@ def setmeup() -> None:
     username = current_user()
     local_paths = ["/storage", "/scratch", "/shared", "/software"]
     dirs_to_create = [
-        os.path.join(path, username) for path in local_paths if os.path.exists(path)
+        Path(path) / username for path in local_paths if Path(path).exists()
     ]
     user_logger.info("Will create the following directories:")
     for path in dirs_to_create:
@@ -137,7 +143,7 @@ def setmeup() -> None:
     typer.confirm("Do you want to continue?", abort=True)
 
     for path in local_paths:
-        if os.path.exists(path):
+        if Path(path).exists():
             __create_dir(f"{path}/{username}")
 
 

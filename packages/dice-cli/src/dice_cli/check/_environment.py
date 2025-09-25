@@ -1,5 +1,7 @@
+from __future__ import annotations
+
+import os
 from enum import Enum
-from typing import Dict, List
 
 from prettytable import PrettyTable
 
@@ -19,7 +21,7 @@ class EnvironmentStatus(str, Enum):
     missing = "missing"
 
 
-ENV_PATTERNS: Dict[EnvironmentScope, List[str]] = {
+ENV_PATTERNS: dict[EnvironmentScope, list[str]] = {
     EnvironmentScope.hdfs: ["hdfs", "hadoop", "java"],
     EnvironmentScope.python: ["python", "conda"],
     EnvironmentScope.cpp: ["gcc", "cmake"],
@@ -27,9 +29,7 @@ ENV_PATTERNS: Dict[EnvironmentScope, List[str]] = {
 }
 
 
-def get_env_for_scope(scope: EnvironmentScope) -> Dict[str, str]:
-    import os
-
+def get_env_for_scope(scope: EnvironmentScope) -> dict[str, str]:
     env_vars = os.environ.copy()
     if scope == EnvironmentScope.everything:
         return env_vars
@@ -42,21 +42,22 @@ def get_env_for_scope(scope: EnvironmentScope) -> Dict[str, str]:
     }
 
 
-def check_env_entry(name: str, value: str) -> EnvironmentStatus:
+def check_env_entry(name: str, value: str) -> EnvironmentStatus:  # noqa: ARG001
     # TODO: add hints if things deviate from /etc/dice/config.yaml
     if value == "":
         return EnvironmentStatus.missing
     return EnvironmentStatus.ok
 
 
-def prepare_table(env_vars: Dict[str, str]) -> PrettyTable:
+def prepare_table(env_vars: dict[str, str]) -> PrettyTable:
     headers = ["Name", "Value", "Status"]
     rows = []
     for name, value in env_vars.items():
         status = check_env_entry(name, value)
+        new_value = value
         if ":" in value and len(value) > 50:
-            value = "\n".join(value.split(":"))
-        rows.append([name, value, status.value])
+            new_value = "\n".join(value.split(":"))
+        rows.append([name, new_value, status.value])
 
     table = PrettyTable(headers)
     table.align["Name"] = "l"

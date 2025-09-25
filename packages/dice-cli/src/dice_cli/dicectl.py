@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 from typing import Any
 
@@ -36,7 +38,7 @@ def version() -> None:
 
 @app.command()
 def date(
-    date_format: _date.DateOptions = typer.Option(
+    date_format: _date.DateOptions = typer.Option(  # noqa: B008
         _date.DateOptions.ISO8601_JUST_Y_M_D,
         "--format",
         "-f",

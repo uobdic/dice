@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from ._csv import (
     read_ints_from_csv,
     read_list_data_from_csv,

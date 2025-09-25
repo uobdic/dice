@@ -1,8 +1,12 @@
-import glob
-import os
-from typing import Any, Callable, Iterator, List, Tuple
+from __future__ import annotations
+
+import datetime
+from collections.abc import Callable, Iterator
+from pathlib import Path
+from typing import Any
 
 import classad
+import tabulate
 import typer
 
 from dice_cli.logger import admin_logger
@@ -13,14 +17,14 @@ app = typer.Typer(help="Commands for investigation")
 def _get_condor_startd_history(path_to_condor_log: str) -> Iterator[classad.ClassAd]:
     """Get all the startd history files and return a generator of classads."""
 
-    stard_history_search = os.path.join(path_to_condor_log, "startd_history*")
-    startd_history_files = glob.glob(stard_history_search)
+    startd_history_files = list(
+        Path.glob(Path(path_to_condor_log), "startd_history*"))
     startd_history_files.sort()
     for file_name in startd_history_files:
-        with open(file_name) as f:
+        with Path(file_name).open() as f:
             lines = f.readlines()
         stop_at = "*** Offset"
-        current_ad: List[str] = []
+        current_ad: list[str] = []
         for line in lines:
             if line.startswith(stop_at):
                 ad = "\n".join(current_ad)
@@ -47,7 +51,7 @@ def noop(x: Any) -> Any:
 
 def get_ad_info(
     ads: Iterator[classad.ClassAd], time_fmt_func: Callable[[float], str] = noop
-) -> Tuple[List[str], List[List[str]]]:
+) -> tuple[list[str], list[list[str]]]:
     info = []
     headers = ["Owner", "ClusterId", "JobStartDate", "CompletionDate"]
     for ad in ads:
@@ -64,9 +68,6 @@ def get_ad_info(
 
 def print_ad_info(ads: Iterator[classad.ClassAd], output_format: str = "psql") -> None:
     """Print the start and end times of the jobs in the classads."""
-    import datetime
-
-    import tabulate
 
     headers, info = get_ad_info(
         ads,

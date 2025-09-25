@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import socket
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable
 
 from plumbum import CommandNotFound, local
 from plumbum.machines.paramiko_machine import ParamikoMachine

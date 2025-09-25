@@ -1,6 +1,7 @@
-from typing import Dict, List
+from __future__ import annotations
 
 import typer
+
 from dice_lib import load_config
 
 from ..logger import user_logger
@@ -10,7 +11,7 @@ app = typer.Typer(help="DICE info commands")
 
 
 def _print_storage_element_info(
-    storage_elemet: str, se_endpoints: Dict[str, str], se_mount_point: str
+    storage_elemet: str, se_endpoints: dict[str, str], se_mount_point: str
 ) -> None:
     user_logger.info(f"Storage element: {storage_elemet}")
     user_logger.info("SE endpoints:")
@@ -19,7 +20,7 @@ def _print_storage_element_info(
     user_logger.info(f"SE mount point: {dice_params.HDFS_FUSE_MOUNT + se_mount_point}")
 
 
-def _print_fts_info(fts_servers: List[str]) -> None:
+def _print_fts_info(fts_servers: list[str]) -> None:
     user_logger.info("FTS servers (for submitting transfers between storage elements):")
     user_logger.info("------------------------------------------------------")
     for server in fts_servers:

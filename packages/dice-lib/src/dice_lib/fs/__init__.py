@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from .._config import DEFAULT_DICE_CONFIG_PATH, load_config
 from ._base import FileSystem
@@ -22,12 +22,12 @@ FACTORIES: dict[str, type[FileSystem]] = {
     "Default": PosixFileSystem,
 }
 
-MountSettings = Dict[str, Any]
+MountSettings = dict[str, Any]
 
 __all__ = [
-    "FileSystem",
-    "DavixFileSystem",
     "HDFS",
+    "DavixFileSystem",
+    "FileSystem",
     "GridFTPFileSystem",
     "PosixFileSystem",
     "S3FileSystem",

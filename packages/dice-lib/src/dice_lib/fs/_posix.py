@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import datetime
 from pathlib import Path
-from typing import Callable
 
 from plumbum import local
 from plumbum.commands.base import BoundCommand

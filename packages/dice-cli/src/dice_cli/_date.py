@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 import datetime
 from enum import Enum
-from typing import Dict
 
 
 class DateFormats(str, Enum):
-    ISO8601 = "%Y%m%dT%H%M%S.%fZ"
+    ISO8601 = "%Y%m%dT%H%M%S.%f"
     ISO8601_WITH_TZ = "%Y%m%dT%H%M%S.%fZ"
     ISO8601_WITH_TZ_NO_MS = "%Y%m%dT%H%M%SZ"
     ISO8601_JUST_Y_M_D = "%Y%m%d"
@@ -21,7 +22,7 @@ class DateOptions(str, Enum):
     STARDATE = "stardate"
 
 
-OPTION_TO_FORMAT: Dict[DateOptions, DateFormats] = {
+OPTION_TO_FORMAT: dict[DateOptions, DateFormats] = {
     DateOptions.ISO8601: DateFormats.ISO8601,
     DateOptions.ISO8601_WITH_TZ: DateFormats.ISO8601_WITH_TZ,
     DateOptions.ISO8601_WITH_TZ_NO_MS: DateFormats.ISO8601_WITH_TZ_NO_MS,

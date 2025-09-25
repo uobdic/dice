@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import logging
-from typing import Dict
+
+from rich.logging import RichHandler
 
 from dice_lib.date import (
     DEFAULT_DATE_FORMAT,
@@ -7,7 +10,6 @@ from dice_lib.date import (
     current_formatted_date,
 )
 from dice_lib.user import current_user
-from rich.logging import RichHandler
 
 
 class LevelFormatter(logging.Formatter):
@@ -15,7 +17,7 @@ class LevelFormatter(logging.Formatter):
     From https://stackoverflow.com/a/28636024/362457
     """
 
-    def __init__(self, fmt: str, datefmt: str, level_fmts: Dict[int, str]):
+    def __init__(self, fmt: str, datefmt: str, level_fmts: dict[int, str]):
         self._level_formatters = {}
         for level, format in level_fmts.items():
             # Could optionally support level names too

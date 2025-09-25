@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 import socket
-from typing import List, Tuple
 
 from dice_cli.logger import admin_logger
 
 
-def _dns_report(hosts: List[str]) -> Tuple[List[str], List[Tuple[str, str, str]]]:
+def _dns_report(hosts: list[str]) -> tuple[list[str], list[tuple[str, str, str]]]:
     result = []
     headers = [
         "fqdn",

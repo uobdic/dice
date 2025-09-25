@@ -1,6 +1,13 @@
+from __future__ import annotations
+
 import ipaddress
+from collections.abc import Generator
 from enum import Enum
-from typing import Any, Dict, Generator, List, Optional, Union
+from typing import Any
+
+import dns.resolver
+import dns.reversename
+import nmap
 
 from dice_cli.cache import admin_cache
 from dice_cli.logger import admin_logger
@@ -13,13 +20,12 @@ class HostState(Enum):
 
 @admin_cache.memoize(expire=60 * 15, tag="_ip_to_fqdn")
 def _ip_to_fqdn(
-    ip_address: Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
-) -> Optional[str]:
+    ip_address: ipaddress.IPv4Address | ipaddress.IPv6Address
+) -> str | None:
     """Uses the Domain Name Service (DNS) to get the Fully Qualified Domain Name (FQDN) for a given IP address."""
-    import dns.resolver
-    import dns.reversename
+    
 
-    fqdn: Optional[str] = None
+    fqdn: str | None = None
     address = dns.reversename.from_address(str(ip_address))
     try:
         fqdn = dns.resolver.query(address, "PTR")[0].to_text()
@@ -31,14 +37,14 @@ def _ip_to_fqdn(
 
 
 @admin_cache.memoize(expire=60 * 15, tag="_get_dns_hosts")
-def _get_dns_hosts(ip_network: str) -> List[Dict[str, str]]:
+def _get_dns_hosts(ip_network: str) -> list[dict[str, str]]:
     """Collects all DNS records for a given network."""
     network = ipaddress.ip_network(ip_network)
     all_ips = list(network.hosts())
     dns_hosts = []
     dns_entries = [_ip_to_fqdn(ip) for ip in all_ips]
 
-    for entry, ip in zip(dns_entries, all_ips):
+    for entry, ip in zip(dns_entries, all_ips, strict=False):
         if entry is None:
             continue
         dns_hosts.append({"fqdn": entry, "ipv4": str(ip), "status": HostState.DOWN})
@@ -47,8 +53,8 @@ def _get_dns_hosts(ip_network: str) -> List[Dict[str, str]]:
 
 
 @admin_cache.memoize(expire=60 * 15, tag="_get_all_active_ips")
-def _get_all_active_ips(ip_network: str) -> List[Dict[str, str]]:
-    import nmap
+def _get_all_active_ips(ip_network: str) -> list[dict[str, str]]:
+    
 
     admin_logger.debug(f"Scanning network {ip_network}")
     nm = nmap.PortScanner()
@@ -71,19 +77,19 @@ def _get_all_active_ips(ip_network: str) -> List[Dict[str, str]]:
             continue
         admin_logger.debug(f"{host} | {host_info['status']['state']}")
         result.append(
-            dict(
-                fqdn=host_info["hostnames"][0]["name"],
-                ipv4=host_info["addresses"]["ipv4"],
-                status=host_info["status"]["state"],
-            )
+            {
+                "fqdn": host_info["hostnames"][0]["name"],
+                "ipv4": host_info["addresses"]["ipv4"],
+                "status": host_info["status"]["state"],
+            }
         )
 
     return result
 
 
 def _cleanup_hosts(
-    hosts: List[Dict[str, str]]
-) -> Generator[Dict[str, str], None, None]:
+    hosts: list[dict[str, str]]
+) -> Generator[dict[str, str], None, None]:
     for host in hosts:
         if host["fqdn"] is None:
             continue  # type:ignore[unreachable]
@@ -94,12 +100,12 @@ def _cleanup_hosts(
         yield host
 
 
-def _scan_network(ip_network: str) -> List[Dict[str, Any]]:
+def _scan_network(ip_network: str) -> list[dict[str, Any]]:
     # get all IP addresses in the network
     # check DNS entries for all IP addresses
     # ping all DNS records
     # check if anything NOT in DNS responds to ping
-    dns_hosts: List[Dict[str, str]] = _get_dns_hosts(ip_network)
+    dns_hosts: list[dict[str, str]] = _get_dns_hosts(ip_network)
     all_active_ips = _get_all_active_ips(ip_network)
 
     active_ips_without_dns = []
@@ -118,6 +124,5 @@ def _scan_network(ip_network: str) -> List[Dict[str, Any]]:
     dns_hosts.extend(active_ips_without_dns)
 
     # cleanup
-    dns_hosts = [host for host in _cleanup_hosts(dns_hosts)]
+    return list(_cleanup_hosts(dns_hosts))
 
-    return dns_hosts

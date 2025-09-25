@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import List, Tuple
 
 from dice_lib import load_config
 from dice_lib.host import HostCommand
@@ -16,7 +17,7 @@ class InstallConfig:
     config_dst: str
     mount_point: str
     fstab_entry: str
-    symlinks: List[Tuple[str, str]]
+    symlinks: list[tuple[str, str]]
 
 
 def _read_dice_config() -> InstallConfig:
@@ -35,7 +36,7 @@ def _read_dice_config() -> InstallConfig:
     )
 
 
-def get_setup_commands() -> List[HostCommand]:
+def get_setup_commands() -> list[HostCommand]:
     config: InstallConfig = _read_dice_config()
     make_directories = HostCommand(
         "mkdir",

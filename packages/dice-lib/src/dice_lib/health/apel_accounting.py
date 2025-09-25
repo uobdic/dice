@@ -29,7 +29,7 @@ def _get_accounting_data(url: str) -> list[dict[str, str]]:
     header = [cell.text for cell in rows[1].find_all("th")]
     data = []
     for row in rows[2:]:
-        data.append(dict(zip(header, [cell.text for cell in row.find_all("td")])))
+        data.append(dict(zip(header, [cell.text for cell in row.find_all("td")], strict=False)))
 
     return data
 

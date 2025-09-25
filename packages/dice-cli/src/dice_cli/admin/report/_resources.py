@@ -7,8 +7,10 @@ The resource report should provide information on
 - create a graph of the CPU capacity over time
 - overlay the graphs with expected data volume from the experiments
 """
+from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import Any
 
 import pandas as pd
@@ -18,12 +20,11 @@ from dice_cli.logger import admin_logger
 
 
 def read_lumi_json(file_name: str) -> pd.DataFrame:
-    with open(file_name) as f:
+    with Path(file_name).open() as f:
         data = json.load(f)
     # lumi json has the form of {"year": [2023, ...], "lumi": [1.2, ...]}
     # create a pandas dataframe from this
-    df = pd.DataFrame(data)
-    return df
+    return pd.DataFrame(data)
 
 
 def calculate_cumulative_lumi(df: pd.DataFrame) -> pd.DataFrame:
@@ -56,4 +57,4 @@ def _resources_report(hosts: list[str]) -> tuple[list[str], dict[str, Any]]:
 if __name__ == "__main__":
     df = read_lumi_json("lhc_lumi.json")
     df = calculate_cumulative_lumi(df)
-    print(df)
+    print(df)  # noqa: T201

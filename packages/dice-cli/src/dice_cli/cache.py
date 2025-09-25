@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from diskcache import FanoutCache
 
 admin_cache = FanoutCache("~/.dice_admin_cache", shards=4, timeout=1)

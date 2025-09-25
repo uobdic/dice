@@ -1,8 +1,10 @@
 """
 from https://stackoverflow.com/questions/54813894/how-to-download-a-file-with-python-using-tqdm
 """
+from __future__ import annotations
 
 import math
+from pathlib import Path
 
 import requests
 from tqdm import tqdm
@@ -14,7 +16,7 @@ def download(url: str, destination: str) -> None:
     block_size = 1024
     wrote = 0
 
-    with open(destination, "wb") as f:
+    with Path(destination).open("wb") as f:
         progress = tqdm(
             r.iter_content(block_size),
             total=math.ceil(total_size / block_size),
