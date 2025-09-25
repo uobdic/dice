@@ -25,7 +25,7 @@ def write_list_data_as_dict_to_csv(
         writer.writeheader()
         writer.writerows(data)
 
-    
+
 def write_list_data_to_csv(
     data: list[Any], fieldnames: list[str], output_file: Path
 ) -> None:

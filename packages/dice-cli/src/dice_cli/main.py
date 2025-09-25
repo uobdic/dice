@@ -55,11 +55,8 @@ def glossary(
     """
     Show the meaning of a given word (in DICE context)
     """
-    
 
     if print_all:
-        
-
         x = PrettyTable()
         x.field_names = ["Word", "Meaning"]
         for word, meaning in GLOSSARY.items():
@@ -121,7 +118,6 @@ def setmeup() -> None:
     """
     Command to set you up across all DICE systems
     """
-    
 
     # create /storage/<username> directory
     # create /scratch/<username> directory

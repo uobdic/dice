@@ -17,8 +17,7 @@ app = typer.Typer(help="Commands for investigation")
 def _get_condor_startd_history(path_to_condor_log: str) -> Iterator[classad.ClassAd]:
     """Get all the startd history files and return a generator of classads."""
 
-    startd_history_files = list(
-        Path.glob(Path(path_to_condor_log), "startd_history*"))
+    startd_history_files = list(Path.glob(Path(path_to_condor_log), "startd_history*"))
     startd_history_files.sort()
     for file_name in startd_history_files:
         with Path(file_name).open() as f:

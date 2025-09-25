@@ -20,10 +20,9 @@ class HostState(Enum):
 
 @admin_cache.memoize(expire=60 * 15, tag="_ip_to_fqdn")
 def _ip_to_fqdn(
-    ip_address: ipaddress.IPv4Address | ipaddress.IPv6Address
+    ip_address: ipaddress.IPv4Address | ipaddress.IPv6Address,
 ) -> str | None:
     """Uses the Domain Name Service (DNS) to get the Fully Qualified Domain Name (FQDN) for a given IP address."""
-    
 
     fqdn: str | None = None
     address = dns.reversename.from_address(str(ip_address))
@@ -54,8 +53,6 @@ def _get_dns_hosts(ip_network: str) -> list[dict[str, str]]:
 
 @admin_cache.memoize(expire=60 * 15, tag="_get_all_active_ips")
 def _get_all_active_ips(ip_network: str) -> list[dict[str, str]]:
-    
-
     admin_logger.debug(f"Scanning network {ip_network}")
     nm = nmap.PortScanner()
     nm.scan(hosts=ip_network, arguments="-sP")
@@ -125,4 +122,3 @@ def _scan_network(ip_network: str) -> list[dict[str, Any]]:
 
     # cleanup
     return list(_cleanup_hosts(dns_hosts))
-

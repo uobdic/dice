@@ -13,8 +13,6 @@ app = typer.Typer(help="DICE commands for various checks")
 
 
 def add_enum_as_options(enum_class: Any) -> Callable[..., Any]:
-    
-
     def change_params(func: Callable[..., Any]) -> Callable[..., Any]:
         params = []
         annotations = {}

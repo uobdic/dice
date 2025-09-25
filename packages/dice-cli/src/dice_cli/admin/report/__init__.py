@@ -34,7 +34,8 @@ app = typer.Typer(help="Commands for report creation")
 @app.command()
 def storage(
     paths: list[Path] = typer.Argument(...),  # noqa: B008
-    output_file: Path | None = typer.Option(  # noqa: B008
+    output_file: Path
+    | None = typer.Option(  # noqa: B008
         None,
         "-o",
         "--output",
@@ -44,8 +45,7 @@ def storage(
     print_to_console: bool = typer.Option(
         False, "--print", help="Print to console instead of output file"
     ),
-    no_summary: bool = typer.Option(
-        False, "--no-summary", help="Do not print summary"),
+    no_summary: bool = typer.Option(False, "--no-summary", help="Do not print summary"),
 ) -> None:
     """
     Generate a report of the storage usage of the given paths.
@@ -89,7 +89,8 @@ def storage(
 def consistency_check_grid(
     grid_endpoint: str = typer.Argument(...),  # noqa: B008, RUF100
     storage_endpoint: str = typer.Argument(...),
-    output_file: Path | None = typer.Option(  # noqa: B008
+    output_file: Path
+    | None = typer.Option(  # noqa: B008
         None,
         "-o",
         "--output",
@@ -105,13 +106,15 @@ def consistency_check_grid(
     """
     admin_logger.warning(":construction: Work in progress :construction:")
     admin_logger.warning(
-        f"Grid endpoint: {grid_endpoint}, storage endpoint: {storage_endpoint}, output file: {output_file}")
+        f"Grid endpoint: {grid_endpoint}, storage endpoint: {storage_endpoint}, output file: {output_file}"
+    )
 
 
 @app.command()
 def network(
     ip_network: str = typer.Argument(...),
-    output_file: Path | None = typer.Option(  # noqa: B008
+    output_file: Path
+    | None = typer.Option(  # noqa: B008
         None,
         "-o",
         "--output",
@@ -151,7 +154,8 @@ def network(
 @app.command()
 def inventory(
     network_report_file: Path = typer.Argument(...),  # noqa: B008
-    output_file: Path | None = typer.Option(  # noqa: B008
+    output_file: Path
+    | None = typer.Option(  # noqa: B008
         None,
         "-o",
         "--output",
@@ -160,8 +164,7 @@ def inventory(
     print_to_console: bool = typer.Option(
         False, "--print", help="Print to console instead of output file"
     ),
-    remote_user: str = typer.Option(
-        "root", "--remote-user", help="Remote user"),
+    remote_user: str = typer.Option("root", "--remote-user", help="Remote user"),
 ) -> None:
     """Generate full inventory report based on network report"""
     if not output_file and not print_to_console:
@@ -170,8 +173,7 @@ def inventory(
 
     network_report = read_list_data_from_csv(network_report_file)
     active_hosts = [host for host in network_report if host["status"] == "UP"]
-    inventory_report = list(
-        _inventory_from_network_report(active_hosts, remote_user))
+    inventory_report = list(_inventory_from_network_report(active_hosts, remote_user))
     if not print_to_console:
         write_list_data_as_dict_to_csv(
             inventory_report, INVENTORY_COLUMNS, cast(Path, output_file)
@@ -182,7 +184,8 @@ def inventory(
 @app.command()
 def dns(
     hosts: list[str] = typer.Argument(...),  # noqa: B008
-    output_file: Path | None = typer.Option(  # noqa: B008
+    output_file: Path
+    | None = typer.Option(  # noqa: B008
         None,
         "-o",
         "--output",
@@ -203,7 +206,7 @@ def dns(
         output_file = Path(f"/tmp/{today}_dice_admin_dns_report.csv")
 
     admin_logger.warning(":construction: Work in progress :construction:")
-    
+
     headers, dns_report = _dns_report(hosts)
     if not print_to_console:
         write_list_data_to_csv(dns_report, headers, cast(Path, output_file))
@@ -218,7 +221,8 @@ def dns(
 @app.command()
 def resources(
     host_inventory_file: Path = typer.Argument(...),  # noqa: B008
-    output_file: Path | None = typer.Option(  # noqa: B008
+    output_file: Path
+    | None = typer.Option(  # noqa: B008
         None,
         "-o",
         "--output",
@@ -241,7 +245,6 @@ def resources(
         output_file = Path(f"/tmp/{today}_dice_admin_resources_report.csv")
 
     admin_logger.warning(":construction: Work in progress :construction:")
-    
 
     # the inventory file is a csv file with columns defined in _inventory.py
     # we are only interested in the FQDN column for "Description/Purpose"==group
@@ -254,8 +257,7 @@ def resources(
 
     headers, resources_report = _resources_report(hosts)
     if not print_to_console:
-        write_list_data_to_csv(resources_report, headers,
-                               cast(Path, output_file))
+        write_list_data_to_csv(resources_report, headers, cast(Path, output_file))
         admin_logger.info(f"Report saved to {output_file}")
     else:
         admin_logger.info(
