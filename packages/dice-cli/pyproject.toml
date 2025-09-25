@@ -67,7 +67,10 @@ admin = [
 ]
 
 [project.urls]
-homepage = "https://github.com/uobdic/dice-cli"
+Homepage = "https://github.com/uobdic/dice"
+"Bug Tracker" = "https://github.com/uobdic/dice/issues"
+Discussions = "https://github.com/uobdic/dice/discussions"
+Changelog = "https://github.com/uobdic/dice/releases"
 
 [tool.hatch]
 version.path = "../../src/dice/_version.py"

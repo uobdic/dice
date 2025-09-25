@@ -53,10 +53,10 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/uobdic/dice-api"
-"Bug Tracker" = "https://github.com/uobdic/dice-api/issues"
-Discussions = "https://github.com/uobdic/dice-api/discussions"
-Changelog = "https://github.com/uobdic/dice-api/releases"
+Homepage = "https://github.com/uobdic/dice"
+"Bug Tracker" = "https://github.com/uobdic/dice/issues"
+Discussions = "https://github.com/uobdic/dice/discussions"
+Changelog = "https://github.com/uobdic/dice/releases"
 
 
 [tool.hatch]
