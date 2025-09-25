@@ -9,7 +9,6 @@ import typer
 from prettytable import PrettyTable
 
 from dice_lib import GLOSSARY
-from dice_lib.user import current_user
 
 from . import __version__, _date, benchmark, check, docs, info, job
 from .logger import console_handler, user_logger
@@ -111,36 +110,6 @@ def __create_dir(path: str) -> None:
     except Exception as e:
         user_logger.error(f"Unable to create directory {path!r}: {e}")
         raise typer.Exit(1) from e
-
-
-@app.command()
-def setmeup() -> None:
-    """
-    Command to set you up across all DICE systems
-    """
-
-    # create /storage/<username> directory
-    # create /scratch/<username> directory
-    # create /shared/<username> directory
-    # create /software/<username> directory
-    # check if hdfs://<username> exists --> if not, print instructions to create it
-    username = current_user()
-    local_paths = ["/storage", "/scratch", "/shared", "/software"]
-    dirs_to_create = [
-        Path(path) / username for path in local_paths if Path(path).exists()
-    ]
-    user_logger.info("Will create the following directories:")
-    for path in dirs_to_create:
-        user_logger.info(f"  {path}")
-    user_logger.info(
-        "For more information on the paths, please check the wiki for the current node you are on."
-    )
-
-    typer.confirm("Do you want to continue?", abort=True)
-
-    for path in local_paths:
-        if Path(path).exists():
-            __create_dir(f"{path}/{username}")
 
 
 def main() -> Any:
