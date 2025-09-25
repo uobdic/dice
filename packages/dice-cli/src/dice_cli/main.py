@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import Any
 
 import rich
 import typer
-from anyio import Path
 from prettytable import PrettyTable
 
 from dice_lib import GLOSSARY
@@ -107,7 +107,7 @@ def __create_dir(path: str) -> None:
         return
     user_logger.info(f"Creating directory {path!r}")
     try:
-        _ = Path(path).mkdir(parents=True, exist_ok=True)
+        Path(path).mkdir(parents=True, exist_ok=True)
     except Exception as e:
         user_logger.error(f"Unable to create directory {path!r}: {e}")
         raise typer.Exit(1) from e
